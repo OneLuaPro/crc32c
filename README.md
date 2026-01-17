@@ -1,7 +1,5 @@
 # CRC32C
 
-[![Build Status](https://github.com/google/crc32c/actions/workflows/build.yml/badge.svg)](https://github.com/google/crc32c/actions/workflows/build.yml)
-
 New file format authors should consider
 [HighwayHash](https://github.com/google/highwayhash). The initial version of
 this code was extracted from [LevelDB](https://github.com/google/leveldb), which
