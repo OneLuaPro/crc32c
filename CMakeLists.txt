@@ -113,9 +113,9 @@ int main() {
 
 # Check for SSE4.2 support in the compiler.
 set(OLD_CMAKE_REQURED_FLAGS ${CMAKE_REQUIRED_FLAGS})
-if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} /arch:AVX")
-elseif(CMAKE_CXX_COMPILER_ID MATCHES "IntelLLVM")
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "IntelLLVM")
   set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} /QxSSE4.2")
 else()
   set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} -msse4.2")
@@ -252,12 +252,14 @@ target_sources(crc32c_sse42
     "src/crc32c_sse42.h"
 )
 if(HAVE_SSE42)
-  if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC|IntelLLVM")
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     target_compile_options(crc32c_sse42 PRIVATE "/arch:AVX")
-  else(CMAKE_CXX_COMPILER_ID MATCHES "MSVC|IntelLLVM")
+  elseif(CMAKE_CXX_COMPILER_ID STREQUAL "IntelLLVM")
+    target_compile_options(crc32c_sse42 PRIVATE "/QxSSE4.2")
+  else()
     target_compile_options(crc32c_sse42 PRIVATE "-msse4.2")
-  endif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC|IntelLLVM")
-endif(HAVE_SSE42)
+  endif()
+endif()
 
 # CMake only enables PIC by default in SHARED and MODULE targets.
 if(BUILD_SHARED_LIBS)
